@@ -19,4 +19,11 @@ describe("formatValue", () => {
   ])("formats %p as %s", (value, expected) => {
     expect(formatValue(value)).toBe(expected);
   });
+
+  it("falls back to String() for out-of-grammar types like Symbol and function", () => {
+    const sym = Symbol("s");
+    expect(formatValue(sym)).toBe(String(sym));
+    const fn = () => {};
+    expect(formatValue(fn)).toBe(String(fn));
+  });
 });
