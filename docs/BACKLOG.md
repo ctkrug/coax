@@ -5,7 +5,7 @@ verifiable acceptance criteria — concrete checks, not vibes.
 
 ## Epic 1 — The Oracle core (wow moment first)
 
-- [ ] **1.1 Operand editor + `+` operator, including the `{} + []` parsing
+- [x] **1.1 Operand editor + `+` operator, including the `{} + []` parsing
   quirk (WOW MOMENT)**
   - Entering `[]` as operand A and `{}` as operand B, then selecting `+`,
     shows the result `"[object Object]"` with a rendered trace listing
@@ -21,7 +21,7 @@ verifiable acceptance criteria — concrete checks, not vibes.
   - Swapping operand A/B and re-running updates the trace within one
     render tick (no stale trace left on screen).
 
-- [ ] **1.2 Harden the ToPrimitive/ToNumber/ToString engine**
+- [x] **1.2 Harden the ToPrimitive/ToNumber/ToString engine**
   - `toNumber`/`toStringSpec` correctly handle: objects with a custom
     `valueOf`, arrays with >1 element (`ToNumber([1,2])` is `NaN`), `-0`
     (stringifies to `"0"`, but `Object.is` trace distinguishes it from
@@ -31,7 +31,7 @@ verifiable acceptance criteria — concrete checks, not vibes.
     rendered as a designed error state, not an unhandled exception.
   - Unit tests cover each case above and pass in CI.
 
-- [ ] **1.3 Abstract Equality Comparison (`==`) operator**
+- [x] **1.3 Abstract Equality Comparison (`==`) operator**
   - Selecting `==` on two operands of different types (e.g. `1` and
     `'1'`, `null` and `undefined`, `0` and `false`) shows the correct
     boolean result and a trace following ECMA-262 7.2.13 step-by-step,
@@ -40,21 +40,21 @@ verifiable acceptance criteria — concrete checks, not vibes.
     spec's `NaN`-never-equals-`NaN` rule (not silently falling out of
     generic numeric comparison).
 
-- [ ] **1.4 `Boolean()` (ToBoolean) operator**
+- [x] **1.4 `Boolean()` (ToBoolean) operator**
   - Selecting `Boolean()` evaluates it independently per operand (two
     badges, not one), correctly marking `0`, `''`, `NaN`, `null`,
     `undefined`, and `false` as falsy and everything else — including
     `[]` and `{}` — as truthy, each with a one-line spec citation
     (7.1.2).
 
-- [ ] **1.5 Template-literal interpolation operator**
+- [x] **1.5 Template-literal interpolation operator**
   - Selecting the template-literal operator shows the result of
     `` `${A}${B}` `` and a trace reusing the `ToString` engine for each
     operand, matching real template-literal semantics (e.g. an object
     with only `valueOf` still stringifies via `ToPrimitive(string)` →
     `toString` fallback, not `valueOf`).
 
-- [ ] **1.6 Design polish — apply DESIGN.md to the core oracle**
+- [x] **1.6 Design polish — apply DESIGN.md to the core oracle**
   - The operand editor + operator strip + trace panel use the tokens and
     two-column hero layout from `docs/DESIGN.md` (blueprint palette,
     Space Grotesk/JetBrains Mono pairing) at 1440px, not scaffold
@@ -65,7 +65,7 @@ verifiable acceptance criteria — concrete checks, not vibes.
 
 ## Epic 2 — Real-world usability
 
-- [ ] **2.1 Arbitrary operand input via safe expression parsing**
+- [x] **2.1 Arbitrary operand input via safe expression parsing**
   - Users can type any JS-literal-shaped expression (nested arrays,
     nested plain objects, `null`, `undefined`, `NaN`, negative numbers,
     strings with escapes) into either operand field, not just a fixed
