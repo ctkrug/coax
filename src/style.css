@@ -1,0 +1,18 @@
+/* Placeholder scaffold styling — replaced per docs/DESIGN.md in the BUILD phase. */
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, sans-serif;
+  background: #14151f;
+  color: #e6e6f0;
+}
+
+main {
+  max-width: 60ch;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
