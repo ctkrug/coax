@@ -20,6 +20,12 @@ describe("evaluateOperator", () => {
     expect(outcome.badges[1]).toMatchObject({ value: "true", kind: "success" });
   });
 
+  it("bool: the reverse truthy/falsy pairing marks each badge independently", () => {
+    const outcome = evaluateOperator("bool", 1, "");
+    expect(outcome.badges[0]).toMatchObject({ value: "true", kind: "success" });
+    expect(outcome.badges[1]).toMatchObject({ value: "false", kind: "danger" });
+  });
+
   it("template: quotes the concatenated string result", () => {
     const outcome = evaluateOperator("template", "a", 1);
     expect(outcome.badges[0].value).toBe('"a1"');
