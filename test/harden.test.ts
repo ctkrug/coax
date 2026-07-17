@@ -43,3 +43,23 @@ describe("ToPrimitive TypeError", () => {
     expect(() => toStringSpec(hostile)).toThrow(TypeError);
   });
 });
+
+describe("ToNumber/ToString on out-of-scope primitive types", () => {
+  it("ToNumber throws a TypeError for a Symbol or BigInt argument", () => {
+    expect(() => toNumber(Symbol("s"))).toThrow(TypeError);
+    expect(() => toNumber(10n)).toThrow(TypeError);
+  });
+
+  it("ToString throws a TypeError for a Symbol, BigInt, or function argument", () => {
+    expect(() => toStringSpec(Symbol("s"))).toThrow(TypeError);
+    expect(() => toStringSpec(10n)).toThrow(TypeError);
+    expect(() => toStringSpec(() => {})).toThrow(TypeError);
+  });
+
+  it("ToString converts undefined, null, and boolean primitives per the spec table", () => {
+    expect(toStringSpec(undefined)).toBe("undefined");
+    expect(toStringSpec(null)).toBe("null");
+    expect(toStringSpec(true)).toBe("true");
+    expect(toStringSpec(false)).toBe("false");
+  });
+});
