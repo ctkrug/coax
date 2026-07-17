@@ -39,4 +39,27 @@ describe("Abstract Equality Comparison (==)", () => {
     looselyEquals(1, "1", tracer);
     expect(tracer.steps.length).toBeGreaterThan(1);
   });
+
+  it("records the same-reference-required detail for two same-type objects", () => {
+    const tracer = new Tracer();
+    looselyEquals({}, {}, tracer);
+    expect(tracer.steps[0].detail).toMatch(/same reference/);
+  });
+
+  it("null == null and undefined == undefined compare equal via the same-type path", () => {
+    const tracer = new Tracer();
+    expect(looselyEquals(null, null, tracer)).toBe(true);
+    expect(looselyEquals(undefined, undefined, new Tracer())).toBe(true);
+    expect(tracer.steps[0].specSection).toBe("7.2.13 step 1");
+  });
+
+  it("coerces an object operand via ToPrimitive when compared to a number or string on the left", () => {
+    const withValueOf = { valueOf: () => 1 };
+    expect(looselyEquals(1, withValueOf)).toBe(true);
+    expect(looselyEquals("1", withValueOf)).toBe(true);
+
+    const tracer = new Tracer();
+    looselyEquals(1, withValueOf, tracer);
+    expect(tracer.steps.some((s) => s.specSection === "7.2.13 step 11")).toBe(true);
+  });
 });
