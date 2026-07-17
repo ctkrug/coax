@@ -56,6 +56,9 @@ operand text (2x) --parseLiteral--> JS value (2x)
   Anything outside the grammar throws `ParseError`, including input
   nested past a 500-level depth guard (protects the call stack from
   pathological input; a normal `ParseError` rather than a `RangeError`).
+  Keyword lookup (`null`/`NaN`/`Infinity`/...) uses a `Map`, not an
+  object, so `Object.prototype` members like `toString` and `constructor`
+  cannot be mistaken for valid literals via the prototype chain.
 
 - **`src/ui/`** — thin presentation layer over the engine:
   - `dom.ts` — `el()`, a small element builder that only ever writes text
@@ -81,7 +84,14 @@ operand text (2x) --parseLiteral--> JS value (2x)
 - **`src/style.css`** — the full token system and layout from
   `docs/DESIGN.md` (blueprint/technical direction): CSS custom properties
   for color/type/spacing/motion, the two-column desktop / stacked-mobile
-  grid, and every control's hover/focus-visible/active state.
+  grid, and every control's hover/focus-visible/active state. Also styles
+  the below-the-fold explainer and footer added in `index.html`.
+
+- **`index.html`** — the app mount (`#app`) plus a static, below-the-fold
+  SEO explainer (an FAQ around type coercion) and a footer with a GitHub
+  link and portfolio backlink. `main.ts` only touches `#app`, so this
+  static content and the app share one page and one brand: the servable
+  build (`dist/`) is both the tool and its landing page.
 
 ## Run / test
 
