@@ -21,22 +21,44 @@ order. Two different results pop out, each with its own step-by-step trace
 through `ToPrimitive` → `ToNumber`/`ToString` → the `+` operator's algorithm.
 Coercion stops being folklore and starts being a knowable, steppable algorithm.
 
-## Planned features
+## Features
 
-- **Operand editor** — enter any two JS values (primitives, arrays, objects,
-  `null`/`undefined`, `NaN`, `-0`, symbols where legal) as live-typed JS
-  expressions, not a dropdown of preset gotchas.
-- **Operator oracle** — evaluate `==`, `+`, `Boolean(x)` (unary, per operand),
-  and template-literal interpolation (`` `${a}${b}` ``) against the two operands.
+- **Operand editor** — type any two JS literal values (numbers, strings,
+  booleans, `null`/`undefined`/`NaN`/`Infinity`, nested arrays/objects) into
+  the two operand slots. Parsed by a restricted literal grammar — never
+  `eval` — so unsupported syntax shows an inline error instead of crashing.
+- **Operator oracle** — evaluate `==`, `+`, `Boolean(x)` (per operand), and
+  template-literal interpolation (`` `${a}${b}` ``) against the two operands.
 - **Spec step trace** — a rendered, numbered trace of the abstract operations
   invoked (`ToPrimitive`, `OrdinaryToPrimitive`, `ToNumber`, `ToString`,
-  `ToBoolean`, the Abstract/Strict Equality Comparison algorithms) showing each
-  intermediate value, annotated with the spec section it comes from.
+  `ToBoolean`, the Abstract Equality Comparison algorithm), each step showing
+  its spec section, a plain-English detail, and its output value.
+- **The parsing-quirk callout** — when operand A is `{}` and the operator is
+  `+`, a side panel explains why `{} + []` typed at a console top level
+  (statement context, `{}` parses as an empty block) disagrees with the same
+  values evaluated as an expression — and shows both results.
+
+## Planned next
+
 - **Shareable permalink** — encode the current operand pair + operator in the
   URL so a trace can be linked directly into a PR comment or Slack thread.
 - **Preset gotcha gallery** — an optional, secondary list of the classic
   gotchas (`[] + []`, `'5' + 3`, `1 == '1'`, ...) as quick-load examples, not
   the primary interface.
+
+## Usage
+
+```
+npm install
+npm run dev        # local dev server
+npm test            # vitest
+npm run typecheck
+npm run lint
+npm run build        # static output in dist/, subpath-relative
+```
+
+Open the dev server and type into Operand A / Operand B — the trace updates
+live, no submit button.
 
 ## Stack
 
@@ -46,5 +68,10 @@ directory suitable for hosting behind any static file server or CDN subpath.
 
 ## Status
 
-Early scaffold — see [`docs/VISION.md`](docs/VISION.md) for the full design
-rationale and [`docs/BACKLOG.md`](docs/BACKLOG.md) for the build plan.
+Core oracle functionally complete: all four operators, the hardened
+ToPrimitive/ToNumber/ToString/ToBoolean/equality engine, the safe literal
+parser, and the blueprint design direction are all in place. See
+[`docs/VISION.md`](docs/VISION.md) for the design rationale,
+[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the module map, and
+[`docs/BACKLOG.md`](docs/BACKLOG.md) for what's left (permalinks, preset
+gallery, a11y/responsive hardening pass).
